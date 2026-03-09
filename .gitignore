@@ -1,0 +1,46 @@
+# Игнорировать каталог beeline
+/beeline/
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+dist/
+build/
+
+# Docker
+.dockerignore
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# Filebeat
+/filebeat/logs/*
+/filebeat/filebeat-data/
+/filebeat/.env
+
+# Kafka Connect connectors
+/kafka/connectors/*.jar
+/kafka/connectors_settings/ !.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+#csv
+*.csv

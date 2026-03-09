@@ -1,0 +1,27 @@
+{
+  "name": "iceberg-sink-raw_actions",
+  "config": {
+    "connector.class": "org.apache.iceberg.connect.IcebergSinkConnector",
+    "tasks.max": "1",
+    "topics": "raw_actions",
+    "iceberg.tables": "iceberg.ods.fct_actions",
+    "iceberg.catalog.type": "hadoop",  // или "rest", "hive" в зависимости от вашего каталога
+    "iceberg.catalog.warehouse": "s3a://your-iceberg-warehouse/", // Путь в вашем S3/MinIO
+    "iceberg.catalog.hadoop.fs.s3a.endpoint": "http://minio:9000", // Адрес MinIO
+    "iceberg.catalog.hadoop.fs.s3a.access.key": "minioadmin", // Ваш access key
+    "iceberg.catalog.hadoop.fs.s3a.secret.key": "minioadmin", // Ваш secret key
+    "iceberg.catalog.hadoop.fs.s3a.path.style.access": "true",
+    "iceberg.catalog.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem",
+    "iceberg.control.topic": "control-iceberg",
+    "iceberg.control.commit.interval-ms": "300000", // 5 минут, по умолчанию
+    "iceberg.tables.auto-create-enabled": "false",  // Таблица создана вручную
+    "iceberg.tables.evolve-schema-enabled": "true", // Разрешить эволюцию схемы
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false",
+    "transforms": "unwrap",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "false",
+    "transforms.unwrap.delete.handling.mode": "drop"
+  }
+}

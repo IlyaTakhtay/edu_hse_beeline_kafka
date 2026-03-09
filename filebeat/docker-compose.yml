@@ -1,0 +1,22 @@
+services:
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.17.20
+    container_name: filebeat
+    user: root
+    command: filebeat -e -strict.perms=false 
+    environment:
+      - KAFKA_HOSTS=${KAFKA_HOSTS:-kafka:9092}
+      - KAFKA_TOPIC=${KAFKA_TOPIC:-raw-banners}
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:rw
+      # Монтируем папку с логами (укажите правильный путь на хосте)
+      - ./logs:/logs:ro
+      # Volume для registry (важно для сохранения позиции чтения)
+      - filebeat-data:/us/rshare/filebeat/data
+    # Если Filebeat и Kafka в одной сети Docker, раскомментируйте строки ниже
+    # networks:
+    #   - kafka-net
+    restart: unless-stopped
+
+volumes:
+  filebeat-data:

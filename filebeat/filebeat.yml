@@ -1,0 +1,23 @@
+filebeat.inputs:
+  - type: filestream
+    enabled: true
+    paths:
+      - /logs/*.csv
+    fields:
+      log_type: banners
+    fields_under_root: true
+    prospector.scanner.check_interval: 5s
+
+output.kafka:
+  hosts: ["${KAFKA_HOSTS}"]
+  topic: "${KAFKA_TOPIC}"
+  required_acks: 1
+  compression: gzip
+  max_message_bytes: 1000000
+
+processors:
+  - include_fields:
+      fields: ["@timestamp", "message", "log_type"]
+      
+logging.level: info
+logging.to_files: false
