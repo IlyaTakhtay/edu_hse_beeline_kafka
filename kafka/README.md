@@ -41,21 +41,30 @@ docker-compose up -d
 curl http://localhost:8083/connector-plugins | jq
 ```
 
-### 3. Создание Debezium Source Connector (для таблицы `fct_actions`)
+### 3. Создание Debezium Source Connector (для таблицы `actions`)
 
 ```bash
-curl -X POST -H "Content-Type: application/json" \
-  --data @connectors_settings/debezium-fct_actions.json \
-  http://localhost:8083/connectors
+curl -X POST -H "Content-Type: application/json" --data @connectors_settings/debezium-actions.json http://localhost:8083/connectors
+```
+### 4. Создание Debezium Source Connector (для таблицы `installs`)
+
+```bash
+curl -X POST -H "Content-Type: application/json" --data @connectors_settings/debezium-installs.json http://localhost:8083/connectors
 ```
 
 #### Управление состоянием (offsets)
 
 Если нужно сбросить позицию коннектора и перечитать целиком таблицу:
 ```bash
-curl -X PUT http://localhost:8083/connectors/debezium-fct_actions/stop
-curl -X DELETE http://localhost:8083/connectors/debezium-fct_actions/offsets
-curl -X PUT http://localhost:8083/connectors/debezium-fct_actions/resume
+curl -X PUT http://localhost:8083/connectors/debezium-actions/stop
+curl -X DELETE http://localhost:8083/connectors/debezium-actions/offsets
+curl -X PUT http://localhost:8083/connectors/debezium-actions/resume
+```
+
+```bash
+curl -X PUT http://localhost:8083/connectors/debezium-installs/stop
+curl -X DELETE http://localhost:8083/connectors/debezium-installs/offsets
+curl -X PUT http://localhost:8083/connectors/debezium-installs/resume
 ```
 
 ### 4. Установка Iceberg Sink Connector
