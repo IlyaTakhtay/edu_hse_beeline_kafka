@@ -6,6 +6,8 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
     ports:
       - "2181:2181"
+    networks:
+      - shared-network
 
   kafka:
     image: confluentinc/cp-kafka:7.3.0
@@ -24,6 +26,8 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - shared-network
 
   kafka-ui:
     image: kafbat/kafka-ui:main
@@ -37,6 +41,8 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
     depends_on:
       - kafka
+    networks:
+      - shared-network
 
   kafka-connect:
     build:
@@ -54,9 +60,13 @@ services:
       KEY_CONVERTER: "org.apache.kafka.connect.storage.StringConverter"
       VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
       VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
-      # Путь к плагинам: стандартная папка + наша смонтированная
-      # CONNECT_PLUGIN_PATH: "/kafka/connect,/kafka/connect/plugins,/usr/share/java,/kafka/connect/kafka-connect-jdbc"
     volumes:
       - ./connectors:/kafka/connect/plugins:ro
     depends_on:
       - kafka
+    networks:
+      - shared-network
+
+networks:
+  shared-network:
+    driver: bridge
