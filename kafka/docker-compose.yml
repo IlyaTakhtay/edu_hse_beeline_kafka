@@ -39,7 +39,9 @@ services:
       - kafka
 
   kafka-connect:
-    image: quay.io/debezium/connect:2.7
+    build:
+      context: .
+      dockerfile: dockerfile
     container_name: kafka-connect
     ports:
       - "8083:8083"
@@ -53,7 +55,7 @@ services:
       VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
       VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
       # Путь к плагинам: стандартная папка + наша смонтированная
-      CONNECT_PLUGIN_PATH: "/kafka/connect,/kafka/connect/plugins,/usr/share/java"
+      # CONNECT_PLUGIN_PATH: "/kafka/connect,/kafka/connect/plugins,/usr/share/java,/kafka/connect/kafka-connect-jdbc"
     volumes:
       - ./connectors:/kafka/connect/plugins:ro
     depends_on:

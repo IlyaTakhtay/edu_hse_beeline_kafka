@@ -30,6 +30,7 @@ ALTER USER beeline_user WITH REPLICATION;
 ```
 
 ### 2. Запуск стека Kafka
+#### Возможно потребуется использовать VPN
 
 ```bash
 cd kafka
@@ -57,7 +58,25 @@ curl -X DELETE http://localhost:8083/connectors/debezium-postgres/offsets
 curl -X PUT http://localhost:8083/connectors/debezium-postgres/resume
 ```
 
-### 4. Установка Iceberg Sink Connector
+### 4. Создание clickhouse-kafka-connect
+
+```shell
+Invoke-WebRequest -Uri "https://repo1.maven.org/maven2/com/clickhouse/clickhouse-jdbc/0.9.4/clickhouse-jdbc-0.9.4-all.jar" `
+  -OutFile "./connectors/clickhouse-jdbc-0.9.4-all.jar"
+```
+
+```bash
+curl -X POST -H "Content-Type: application/json" --data @connectors_settings/jdbc-clickhouse-banners.json http://localhost:8083/connectors
+```
+
+```bash
+curl -X PUT http://localhost:8083/connectors/jdbc-clickhouse-banners/stop
+curl -X DELETE http://localhost:8083/connectors/jdbc-clickhouse-banners/offsets
+curl -X PUT http://localhost:8083/connectors/jdbc-clickhouse-banners/resume
+```
+
+### 5. Установка Iceberg Sink Connector
+
 
 Скачайте JAR-файл (если ещё не скачан):
 ```powershell
