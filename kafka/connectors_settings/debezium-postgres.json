@@ -1,0 +1,25 @@
+{
+  "name": "debezium-postgres",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "database.hostname": "host.docker.internal",
+    "database.port": "5432",
+    "database.user": "beeline_user",
+    "database.password": "beeline_password",
+    "database.dbname": "beeline_db",
+    "topic.prefix": "cdc",
+    "schema.include.list": "ods",
+    "table.include.list": "ods.installs,ods.fct_actions",
+    "plugin.name": "pgoutput",
+    "slot.name": "debezium_ods_slot",
+    "publication.name": "debezium_ods_pub",
+    "snapshot.mode": "initial",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": "false",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false",
+    "transforms": "unwrap",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "true"
+  }
+}
