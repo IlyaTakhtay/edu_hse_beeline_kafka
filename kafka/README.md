@@ -55,13 +55,6 @@ curl -X PUT http://localhost:8083/connectors/jdbc-clickhouse-banners/resume
 
 ### 4. Установка Iceberg Sink Connector
 
-
-Скачайте JAR-файл (если ещё не скачан):
-```powershell
-Invoke-WebRequest -Uri https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-kafka-connect/1.6.0/iceberg-kafka-connect-1.6.0.jar \
-  -OutFile connectors\iceberg-kafka-connect-1.6.0.jar
-```
-
 Зарегистрируйте коннектор:
 ```bash
 curl -X POST -H "Content-Type: application/json" \
