@@ -3,11 +3,11 @@
   "config": {
     "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
     "tasks.max": "1",
-    "connection.url": "jdbc:clickhouse:http://host.docker.internal:8123/default",
+    "connection.url": "jdbc:clickhouse:http://clickhouse:8123/default",
     "connection.user": "default",
     "connection.password": "your_secure_password",
     "mode": "bulk",
-    "topic.prefix": "cdc-raw-",
+    "topic.prefix": "raw-",
     "table.whitelist": "banners",
     "poll.interval.ms": "10000",
     "key.converter": "org.apache.kafka.connect.json.JsonConverter",

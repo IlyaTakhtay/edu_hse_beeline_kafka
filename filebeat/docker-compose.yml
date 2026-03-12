@@ -20,3 +20,8 @@ services:
 
 volumes:
   filebeat-data:
+
+networks:
+  shared-network:
+    external: true
+    driver: bridge

@@ -7,29 +7,7 @@
 - **`filebeat/`** – Filebeat для отправки CSV-логов в Kafka.
 - **`kafka/`** – Kafka, ZooKeeper, Kafka Connect (Debezium, Iceberg Sink), UI.
 
-### 1. Настройка PostgreSQL
-
-Убедитесь, что PostgreSQL запущен с логической репликацией и пользователь имеет права.
-
-В `docker-compose.yml` для PostgreSQL добавьте:
-
-```yaml
-command:
-  - postgres
-  - -c
-  - wal_level=logical
-  - -c
-  - max_replication_slots=10
-  - -c
-  - max_wal_senders=10
-```
-
-Выполните в БД:
-```sql
-ALTER USER beeline_user WITH REPLICATION;
-```
-
-### 2. Запуск стека Kafka
+### 1. Запуск стека Kafka
 #### Возможно потребуется использовать VPN
 
 ```bash
@@ -42,7 +20,7 @@ docker-compose up -d
 curl http://localhost:8083/connector-plugins | jq
 ```
 
-### 3. Создание Debezium Source Connector в PostgreSQL(для таблицы `actions` и `installs`)
+### 2. Создание Debezium Source Connector в PostgreSQL(для таблицы `actions` и `installs`)
 
 ```bash
 curl -X POST -H "Content-Type: application/json" --data @connectors_settings/debezium-postgres.json http://localhost:8083/connectors
@@ -58,7 +36,7 @@ curl -X DELETE http://localhost:8083/connectors/debezium-postgres/offsets
 curl -X PUT http://localhost:8083/connectors/debezium-postgres/resume
 ```
 
-### 4. Создание clickhouse-kafka-connect
+### 3. Создание clickhouse-kafka-connect
 
 ```shell
 Invoke-WebRequest -Uri "https://repo1.maven.org/maven2/com/clickhouse/clickhouse-jdbc/0.9.4/clickhouse-jdbc-0.9.4-all.jar" `
@@ -75,7 +53,7 @@ curl -X DELETE http://localhost:8083/connectors/jdbc-clickhouse-banners/offsets
 curl -X PUT http://localhost:8083/connectors/jdbc-clickhouse-banners/resume
 ```
 
-### 5. Установка Iceberg Sink Connector
+### 4. Установка Iceberg Sink Connector
 
 
 Скачайте JAR-файл (если ещё не скачан):

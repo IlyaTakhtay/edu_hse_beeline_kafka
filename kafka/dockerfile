@@ -34,4 +34,7 @@ RUN curl -sLf -o ${JDBC_DIR}/common-utils-7.6.0.jar \
 RUN curl -sLf -o ${JDBC_DIR}/clickhouse-jdbc-shaded.jar \
     https://github.com/ClickHouse/clickhouse-java/releases/download/v0.6.3/clickhouse-jdbc-0.6.3-shaded.jar
 
+RUN curl -sLf -o ${JDBC_DIR}/iceberg-kafka-connect-1.6.0.jar \
+    https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-kafka-connect/1.6.0/iceberg-kafka-connect-1.6.0.jar
+
 USER kafka
