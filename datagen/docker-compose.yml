@@ -1,0 +1,42 @@
+services:
+
+  datagen:
+    build: .
+    container_name: datagen
+    environment:
+      # ClickHouse
+      CLICKHOUSE_HOST: clickhouse
+      CLICKHOUSE_PORT: 9000
+      CLICKHOUSE_USER: default
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD:-your_secure_password}
+      CLICKHOUSE_DB: default
+
+      # PostgreSQL
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-app_analytics}
+      POSTGRES_USER: ${POSTGRES_USER:-app_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app_password}
+      POSTGRES_SCHEMA: ${POSTGRES_SCHEMA:-public}
+
+      # Параметры генерации (можно менять)
+      BATCH_SIZE: 50
+      SLEEP_SECONDS: 0.2
+      CLICK_PROBABILITY: 0.03
+      INSTALL_PROBABILITY: 0.2
+      ORGANIC_PROBABILITY: 0.01
+      BANNER_COUNT: 5
+      CAMPAIGN_COUNT: 3
+
+      # Если используете рандомизацию интервалов:
+      # BATCH_SIZE_MIN: 5
+      # BATCH_SIZE_MAX: 15
+      # SLEEP_MIN: 0.1
+      # SLEEP_MAX: 0.5
+    networks:
+      - shared-network
+
+networks:
+  shared-network:
+    external: true
+    driver: bridge
